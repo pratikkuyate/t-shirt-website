@@ -8,6 +8,7 @@ import { downloadCanvasToImage, reader } from "../src/config/config/helpers";
 import { EditorTabs, FilterTabs, DecalTypes } from "../src/config/config/constants";
 import { fadeAnimation, slideAnimation } from "../src/config/config/motion";
 import { AIPicker, ColorPicker, CustomButton, FilePicker, Tab } from "../src/components";
+import toast, { Toaster } from "react-hot-toast";
 
 const Customizer = () => {
   const snap = useSnapshot(state);
@@ -53,12 +54,11 @@ const Customizer = () => {
 
       const data = await response.json();
 
-      console.log(data);
-
       handleDecal(type, `data:image/png;base64,${data.photo}`);
     } catch (error) {
       console.log(error);
-      alert("Something went wrong");
+      toast.error("Free API limit reached. Please try again later.");
+      // alert("Free API limit reached. Please try again later.");
     } finally {
       setGeneratingImg(false);
       setActiveEditorTab("");
@@ -135,6 +135,7 @@ const Customizer = () => {
           </motion.div>
         </>
       )}
+      <Toaster />
     </AnimatePresence>
   );
 };
